@@ -6,7 +6,7 @@ async function getNews() {
         const response = await fetch(`https://newsapi.org/v2/top-headlines?country=br&apiKey=${apiKey}`);
         const data = await response.json();
 
-        if (data.status === 'ok') {
+        if (data.articles && Array.isArray(data.articles)) {
             const articles = data.articles;
 
             articles.forEach(article => {
@@ -20,7 +20,7 @@ async function getNews() {
                 newsContainer.appendChild(newsItem);
             });
         } else {
-            console.error('Erro ao buscar notícias: ', data.message);
+            console.error('Erro ao buscar notícias: Dados ausentes ou não no formato esperado.');
         }
     } catch (error) {
         console.error('Erro ao buscar notícias:', error);
