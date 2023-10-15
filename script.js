@@ -1,27 +1,23 @@
 const apiKey = 'dbd438bb11184854a9d0d766055c39bd';
 const newsContainer = document.getElementById('news-container');
 
+
 async function getNews() {
     try {
-        const response = await fetch(`https://newsapi.org/v2/top-headlines?country=br&apiKey=${apiKey}`);
+        const response = await fetch(`https://newsapi.org/v2/top-headlines?country=br&category=business&apiKey=${apiKey}`);
         const data = await response.json();
+        const articles = data.articles;
 
-        if (data.articles && Array.isArray(data.articles)) {
-            const articles = data.articles;
-
-            articles.forEach(article => {
-                const newsItem = document.createElement('div');
-                newsItem.classList.add('news-item');
-                newsItem.innerHTML = `
-                    <h2>${article.title}</h2>
-                    <p>${article.description || 'Descrição não disponível'}</p>
-                    <a href="${article.url}" target="_blank">Leia mais</a>
-                `;
-                newsContainer.appendChild(newsItem);
-            });
-        } else {
-            console.error('Erro ao buscar notícias: Dados ausentes ou não no formato esperado.');
-        }
+        articles.forEach(article => {
+            const newsItem = document.createElement('div');
+            newsItem.classList.add('news-item');
+            newsItem.innerHTML = `
+                <h2>${article.title}</h2>
+                <p>${article.description || 'Descrição não disponível'}</p>
+                <a href="${article.url}" target="_blank">Leia mais</a>
+            `;
+            newsContainer.appendChild(newsItem);
+        });
     } catch (error) {
         console.error('Erro ao buscar notícias:', error);
     }
